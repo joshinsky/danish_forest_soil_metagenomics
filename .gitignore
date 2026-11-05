@@ -1,0 +1,5 @@
+# large data
+# data/raw/*
+
+# annoying files
+.DS_Store
