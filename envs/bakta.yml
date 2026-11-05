@@ -1,0 +1,13 @@
+# Conda environment for gene annotation with bakta (step 5 of the pipeline).
+# Bakta gets its own environment, as recommended in the 27200 week 5 exercise.
+# Create with:  conda env create -f envs/bakta.yml
+#
+# NOTE: the bakta version must be compatible with the database version used
+# (bakta >= 1.10 requires a v6 database). On the DTU HPC the course database is
+# at /dtu/datasets3/c27200/databases/bakta/db-light/
+name: bakta
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - bakta=1.12.2      # genome / metagenome annotation

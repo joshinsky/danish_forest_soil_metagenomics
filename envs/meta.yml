@@ -1,0 +1,12 @@
+# Conda environment for read QC, adaptor trimming, filtering and assembly
+# (steps 1-4 of the pipeline, following the 27200 week 5 exercise).
+# Create with:  conda env create -f envs/meta.yml
+name: meta
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - seqkit=2.14.0     # read statistics / QC
+  - porechop=0.2.4    # adaptor and barcode removal
+  - filtlong=0.3.1    # length/quality filtering
+  - flye=2.9.6        # (meta)genome assembly
