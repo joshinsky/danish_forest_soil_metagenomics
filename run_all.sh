@@ -3,6 +3,13 @@
 # runs all bsub scripts from repo root
 set -euo pipefail
 
+SAMPLE_FILE=data/metadata/sample_names.txt
+if [ ! -s "$SAMPLE_FILE" ]; then
+    echo "Error: $SAMPLE_FILE is missing or empty" >&2
+    exit 1
+fi
+N_SAMPLES=$(wc -w < "$SAMPLE_FILE" | tr -d ' ')
+
 # create output directories
 mkdir -p results/{1_QC,2_adaptor_trimming,3_filtering,4_assembly,5_gene_annotation}
 mkdir -p logs/{1_QC,2_adaptor_trimming,3_filtering,4_assembly,5_gene_annotation}

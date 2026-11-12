@@ -24,4 +24,5 @@ fi
 echo "Array index ${LSB_JOBINDEX}: assembling sample ${s}"
 
 flye --nano-hq results/3_filtering/${s}.filtered.fastq.gz --meta --threads 10 \
+     --extra-params min_read_cov_cutoff=8 \
      --out-dir results/4_assembly/${s}
