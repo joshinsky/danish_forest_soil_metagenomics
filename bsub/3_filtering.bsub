@@ -1,0 +1,20 @@
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -U c27200
+#BSUB -J filtlong
+#BSUB -n 1
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=5GB]"
+#BSUB -W 600
+#BSUB -o logs/3_filtering/filtlong.sh.o%J
+#BSUB -e logs/3_filtering/filtlong.sh.e%J 
+
+#Actual code
+source activate meta
+set -euo pipefail
+
+SAMPLES=$(cat data/metadata/sample_names.txt)
+
+for s in $SAMPLES; do
+    filtlong --min_length 1000 --keep_percent 90 results/2_adaptor_trimming/${s}.trimmed.fastq.gz | gzip > results/3_filtering/${s}.filtered.fastq.gz
+done

@@ -1,0 +1,20 @@
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -U c27200
+#BSUB -J seqkit
+#BSUB -n 10
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=5GB]"
+#BSUB -W 600
+#BSUB -o logs/1_QC/seqkit.sh.o%J
+#BSUB -e logs/1_QC/seqkit.sh.e%J
+
+#Actual code
+source activate meta
+set -euo pipefail
+
+SAMPLES=$(cat data/metadata/sample_names.txt)
+
+for s in $SAMPLES; do
+    seqkit stats -a -T -j 10 data/raw/${s}.fastq.gz > results/1_QC/${s}.seqkit_stats.tsv
+done

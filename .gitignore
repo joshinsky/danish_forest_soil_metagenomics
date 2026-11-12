@@ -1,5 +1,7 @@
 # large data
-# data/raw/*
+data/raw/*
+results/*
+logs/*
 
 # annoying files
 .DS_Store

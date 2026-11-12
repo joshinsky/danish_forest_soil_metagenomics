@@ -1,0 +1,20 @@
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -U c27200
+#BSUB -J porechop
+#BSUB -n 10
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=5GB]"
+#BSUB -W 600
+#BSUB -o logs/2_adaptor_trimming/porechop.sh.o%J
+#BSUB -e logs/2_adaptor_trimming/porechop.sh.e%J
+
+#Actual code
+source activate meta
+set -euo pipefail
+
+SAMPLES=$(cat data/metadata/sample_names.txt)
+
+for s in $SAMPLES; do
+    porechop -i data/raw/${s}.fastq.gz -o results/2_adaptor_trimming/${s}.trimmed.fastq.gz --threads 10
+done
