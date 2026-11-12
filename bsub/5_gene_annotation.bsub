@@ -18,7 +18,7 @@ SAMPLES=$(cat data/metadata/sample_names.txt)
 for s in $SAMPLES; do
     bakta results/4_assembly/${s}/assembly.fasta \
     --db /dtu/datasets3/c27200/databases/bakta/db-light/ \
-    --output results/5_gene_annotation/${s} --prefix ${s} \
+    --output results/5_gene_annotation/${s} --prefix ${s} --force \
     --meta \
     --threads 10 \
     --skip-trna \

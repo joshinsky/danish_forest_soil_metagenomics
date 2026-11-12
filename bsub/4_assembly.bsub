@@ -1,21 +1,27 @@
 #!/bin/bash
 #BSUB -q hpc
 #BSUB -U c27200
-#BSUB -J "flye"
+#BSUB -J "flye[1-6]"
 #BSUB -n 10
 #BSUB -R "span[hosts=1]"
-#BSUB -R "rusage[mem=10-20GB]"
-#BSUB -W 60000
-#BSUB -o logs/4_assembly/flye.sh.o%J
-#BSUB -e logs/4_assembly/flye.sh.e%J 
+#BSUB -R "rusage[mem=15GB]"
+#BSUB -W 4000
+#BSUB -o logs/4_assembly/flye.sh.o%J_%I
+#BSUB -e logs/4_assembly/flye.sh.e%J_%I
 
 #Actual code
 source activate meta
 set -euo pipefail
 
-SAMPLES=$(cat data/metadata/sample_names.txt)
+# Pick the sample for this array element (works with space- or newline-separated names)
+s=$(tr -s ' \t' '\n' < data/metadata/sample_names.txt | sed '/^$/d' | sed -n "${LSB_JOBINDEX}p")
 
-for s in $SAMPLES; do
-    flye --nano-hq results/3_filtering/${s}.filtered.fastq.gz --meta --threads 10 \
-         --out-dir results/4_assembly/${s}
-done
+if [ -z "$s" ]; then
+    echo "No sample at index ${LSB_JOBINDEX} in data/metadata/sample_names.txt" >&2
+    exit 1
+fi
+
+echo "Array index ${LSB_JOBINDEX}: assembling sample ${s}"
+
+flye --nano-hq results/3_filtering/${s}.filtered.fastq.gz --meta --threads 10 \
+     --out-dir results/4_assembly/${s}
